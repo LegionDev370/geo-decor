@@ -11,14 +11,20 @@ jobs:
       SERVER_USER: ${{secrets.SERVER_USER}}
       PORT: ${{secrets.PORT}}
       SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+      POSTGRES_USER: ${{secrets.POSTGRES_USER}}
+      POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
+      POSTGRES_DB: ${{secrets.POSTGRES_DB}}
     steps:
       - name: creating ssh key
         run: |
           echo "$SSH_PRIVATE_KEY" > ssh_key.pem
           chmod 400 ssh_key.pem
       - name: connecting to server
-        run:
-          ssh -i ssh_key.pem -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST
-          '
-          cd nest-app && sudo docker compose down && sudo docker compose up --build -d
-          '
+        run: ssh -i ssh_key.pem -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST
+      - name: create env file
+        run: |
+          echo "PORT=$PORT\nPOSTGRES_USER=$POSTGRES_USER\nPOSTGRES_PASSWORD=$POSTGRES_PASSWORD\nPOSTGRES_DB=$POSTGRES_DB" > .env
+      - name: pull
+        run: git pull
+      - name: build and run
+        run: sudo docker compose down && sudo docker compose up --build -d
