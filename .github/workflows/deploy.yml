@@ -22,7 +22,7 @@ jobs:
       - name: connecting to server
         run: ssh -i ssh_key.pem -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_HOST
       - name: open folder
-        run: cd home/ubuntu.nest-app
+        run: cd home/ubuntu/nest-app
       - name: create env file
         run: |
           echo "PORT=$PORT\nPOSTGRES_USER=$POSTGRES_USER\nPOSTGRES_PASSWORD=$POSTGRES_PASSWORD\nPOSTGRES_DB=$POSTGRES_DB" > .env
