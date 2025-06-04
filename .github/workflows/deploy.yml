@@ -15,10 +15,6 @@ jobs:
       POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
       POSTGRES_DB: ${{secrets.POSTGRES_DB}}
     steps:
-      - name: creating ssh key
-        run: |
-          echo "$SSH_PRIVATE_KEY" > ssh_key.pem
-          chmod 400 ssh_key.pem
       - name: connecting to server
         run: |
           echo "$SSH_KEY" > key.pem
